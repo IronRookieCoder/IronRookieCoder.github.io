@@ -11,7 +11,7 @@ export async function genFeed(config: SiteConfig) {
     description: 'The blog for IronRookieCoder',
     id: baseUrl,
     link: baseUrl,
-    language: 'en',
+    language: 'zh-CN',
     image: 'https://vuejs.org/images/logo.png',
     favicon: `${baseUrl}/favicon.ico`,
     copyright:
