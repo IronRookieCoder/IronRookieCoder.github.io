@@ -1,0 +1,24 @@
+@startuml
+package "BUG 知识库系统" {
+    [数据采集模块\nCrawler] as crawler
+    [向量化模块\nVectorization] as vector
+    [存储模块\nStorage] as storage
+    [检索模块\nRetrieval] as retrieval
+    [Web服务\nUI] as web
+
+    database "Vector DB\n(Annoy)" as vdb
+    database "关系型DB\n(SQLite)" as rdb
+    
+    crawler --> vector : 原始数据
+    vector --> storage : 特征向量
+    storage --> vdb : 存储向量
+    storage --> rdb : 存储元数据
+    retrieval --> vdb : 向量检索
+    retrieval --> rdb : 元数据查询
+    web --> retrieval : 检索请求
+}
+
+[GitLab] --> crawler
+[BUG管理平台] --> crawler
+[用户] --> web
+@enduml

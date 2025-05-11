@@ -1,0 +1,78 @@
+@startuml
+title BUG知识库系统交互时序
+
+actor 用户
+participant "Web服务" as web
+participant "数据采集模块" as crawler
+participant "向量化模块\n(HybridVectorizer)" as vector
+participant "搜索模块\n(BugSearcher)" as searcher
+participant "存储模块\n(VectorStore)" as storage
+database "向量数据库\n(Annoy)" as vdb
+database "关系型数据库" as rdb
+
+== 数据采集与存储流程 ==
+crawler -> crawler: 并行执行数据采集
+note right
+  - 代码变更分析
+  - 日志信息提取
+  - 环境信息收集
+  - 测试信息整理
+end note
+
+crawler -> searcher: 添加BUG报告(add_bug_report)
+searcher -> vector: 生成特征向量(vectorize_bug_report)
+note right
+  分别对不同字段进行向量化:
+  - summary_vectorizer
+  - code_vectorizer
+  - test_vectorizer
+  - log_vectorizer
+  - environment_vectorizer
+end note
+
+vector -> searcher: 返回向量
+searcher -> storage: 保存向量和BUG报告(add_bug_report)
+storage -> vdb: 存储向量数据
+storage -> rdb: 存储元数据
+storage -> storage: 构建检索索引
+note right
+  - 备份旧索引
+  - 为每种向量构建新索引
+  - 原子替换索引文件
+end note
+
+== 检索查询流程 ==
+用户 -> web: 发起检索请求
+web -> searcher: 搜索相似BUG(search)
+
+searcher -> vector: 生成查询向量
+searcher -> searcher: 确定查询类型和权重
+note right
+  查询类型:
+  - summary_only
+  - code_only
+  - test_only
+  - log_only
+  - environment_only
+  - mixed
+end note
+
+searcher -> storage: 执行向量检索(search)
+
+group 混合检索策略
+storage -> storage: 向量相似度检索(_vector_search)
+
+storage -> storage: 检查相似度阈值
+alt 向量相似度低于阈值
+  storage -> storage: 关键词检索兜底(_keyword_search)
+end
+end
+
+storage -> rdb: 获取完整BUG报告信息
+storage -> storage: LRU缓存优化相似度计算
+
+storage -> searcher: 返回检索结果
+searcher -> web: 返回BUG列表
+web -> 用户: 展示相似结果
+
+@enduml

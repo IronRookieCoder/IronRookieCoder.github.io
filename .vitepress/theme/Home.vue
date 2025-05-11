@@ -9,11 +9,6 @@ const { frontmatter } = useData()
 <template>
   <div class="divide-y divide-gray-200 dark:divide-slate-200/5">
     <div class="pt-6 pb-8 space-y-2 md:space-y-5">
-      <h1
-        class="text-xl leading-9 font-extrabold text-gray-900 dark:text-white tracking-tight sm:text-2xl sm:leading-10 md:text-3xl md:leading-14"
-      >
-        {{ frontmatter.title }}
-      </h1>
       <p class="text-lg leading-7 text-gray-500 dark:text-white">
         {{ frontmatter.subtext }}
       </p>
