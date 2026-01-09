@@ -64,7 +64,7 @@ touch CLAUDE.md plan.md progress.md
 
 创建专用智能体提升效率：
 
-> 📄 **Agent 配置文件参考：** [common/agents/](common/agents/)
+> 📄 **Agent 配置文件参考：** [common/agents/](common/README.md)
 
 | Agent             | 职责                 | 文件路径                           | 模板参考 |
 | ----------------- | -------------------- | ---------------------------------- | -------- |
@@ -83,7 +83,7 @@ touch CLAUDE.md plan.md progress.md
 
 ### 4. 创建自定义命令（可选）
 
-> 📄 **命令文件模板参考：** [common/commands/](common/commands/)
+> 📄 **命令文件模板参考：** [common/commands/](common/README.md)
 
 ```bash
 # 常用命令建议（可从 common/commands/ 复制）
@@ -450,7 +450,7 @@ Normal Mode → [Shift+Tab] → Auto-Accept Mode (⏵⏵) → [Shift+Tab] → Pl
 
 ## 附录：推荐项目结构
 
-> 📄 **配置文件模板参考：** [common/](common/) 目录
+> 📄 **配置文件模板参考：** [common/](common/README.md) 目录
 
 ```
 your-project/
