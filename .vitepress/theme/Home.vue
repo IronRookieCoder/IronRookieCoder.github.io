@@ -14,7 +14,7 @@ const { frontmatter } = useData()
       </p>
     </div>
     <ul class="divide-y divide-gray-200 dark:divide-slate-200/5">
-      <li class="py-12" v-for="{ title, url, date, excerpt } of posts">
+      <li class="py-12" v-for="{ title, url, date, excerpt } of (Array.isArray(posts) ? posts : [])">
         <article
           class="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline"
         >

@@ -9,20 +9,37 @@ const { frontmatter: data } = useData()
 
 const route = useRoute()
 
+// 确保 posts 是数组
+const postsArray = Array.isArray(posts) ? posts : []
+
 function findCurrentIndex() {
-  return posts.findIndex((p) => p.url === route.path)
+  return postsArray.findIndex((p) => p.url === route.path)
 }
 
 // use the customData date which contains pre-resolved date info
-const date = computed(() => posts[findCurrentIndex()].date)
-const nextPost = computed(() => posts[findCurrentIndex() - 1])
-const prevPost = computed(() => posts[findCurrentIndex() + 1])
+const currentIndex = computed(() => findCurrentIndex())
+const date = computed(() => {
+  const index = currentIndex.value
+  return index >= 0 && postsArray[index] ? postsArray[index].date : null
+})
+const nextPost = computed(() => {
+  const index = currentIndex.value
+  return index >= 0 && index > 0 && postsArray[index - 1]
+    ? postsArray[index - 1]
+    : undefined
+})
+const prevPost = computed(() => {
+  const index = currentIndex.value
+  return index >= 0 && index < postsArray.length - 1 && postsArray[index + 1]
+    ? postsArray[index + 1]
+    : undefined
+})
 </script>
 
 <template>
   <article class="xl:divide-y xl:divide-gray-200 dark:xl:divide-slate-200/5">
     <header class="pt-6 xl:pb-10 space-y-1 text-center">
-      <Date :date="date" />
+      <Date v-if="date" :date="date" />
       <h1
         class="text-3xl leading-9 font-extrabold text-gray-900 dark:text-white tracking-tight sm:text-4xl sm:leading-10 md:text-5xl md:leading-14"
       >
