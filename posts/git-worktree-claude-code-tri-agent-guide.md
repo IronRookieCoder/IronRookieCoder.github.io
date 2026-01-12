@@ -1,6 +1,6 @@
 ---
 title: Git Worktree + Claude Code 三子代理协作开发指南
-date: 2026-01-09
+date: 2025-09-04
 author: IronRookieCoder
 ---
 
