@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Date from './Date.vue'
 import Author from './Author.vue'
+import Toc from './Toc.vue'
 import { computed } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import { data as posts } from './posts.data.js'
@@ -38,46 +39,68 @@ const prevPost = computed(() => {
 
 <template>
   <article class="xl:divide-y xl:divide-gray-200 dark:xl:divide-slate-200/5">
-    <header class="pt-6 xl:pb-10 space-y-1 text-center">
-      <Date v-if="date" :date="date" />
-      <h1
-        class="text-3xl leading-9 font-extrabold text-gray-900 dark:text-white tracking-tight sm:text-4xl sm:leading-10 md:text-5xl md:leading-14"
-      >
-        {{ data.title }}
-      </h1>
-    </header>
-
-    <div
-      class="divide-y xl:divide-y-0 divide-gray-200 dark:divide-slate-200/5 xl:grid xl:grid-cols-4 xl:gap-x-10 pb-16 xl:pb-20"
-      style="grid-template-rows: auto 1fr"
-    >
-      <Author />
-      <div
-        class="divide-y divide-gray-200 dark:divide-slate-200/5 xl:pb-0 xl:col-span-3 xl:row-span-2"
-      >
-        <Content class="prose dark:prose-invert max-w-none pt-10 pb-8" />
+    <div class="divide-y xl:divide-y-0 divide-gray-200 dark:divide-slate-200/5 pb-16 xl:pb-20">
+      <!-- 移动端布局 -->
+      <div class="xl:hidden space-y-10">
+        <Author />
+        <div class="divide-y divide-gray-200 dark:divide-slate-200/5">
+          <Content class="prose dark:prose-invert max-w-none pt-10 pb-8" />
+        </div>
       </div>
 
+      <!-- 桌面端三列布局 -->
+      <div class="hidden xl:grid xl:gap-x-10" style="grid-template-columns: 140px 1fr 160px; grid-template-areas: 'author-nav content toc'">
+        <div class="space-y-8" style="grid-area: author-nav">
+          <Author />
+          <nav class="text-sm font-medium leading-5 divide-y divide-gray-200 dark:divide-slate-200/5">
+            <div v-if="prevPost" class="py-4">
+              <span class="text-xs tracking-wide uppercase text-gray-500 dark:text-white mb-2">
+                Previous
+              </span>
+              <a class="link block hover:text-gray-900 dark:hover:text-white" :href="prevPost.url">
+                {{ prevPost.title }}
+              </a>
+            </div>
+            <div v-if="nextPost" class="py-4">
+              <span class="text-xs tracking-wide uppercase text-gray-500 dark:text-white mb-2">
+                Next
+              </span>
+              <a class="link block hover:text-gray-900 dark:hover:text-white" :href="nextPost.url">
+                {{ nextPost.title }}
+              </a>
+            </div>
+            <div class="pt-4">
+              <a class="link block hover:text-gray-900 dark:hover:text-white" href="/">
+                ← Back to the blog
+              </a>
+            </div>
+          </nav>
+        </div>
+        <div class="divide-y divide-gray-200 dark:divide-slate-200/5" style="grid-area: content">
+          <Content class="prose dark:prose-invert max-w-none pt-10 pb-8" />
+        </div>
+        <div style="grid-area: toc">
+          <Toc />
+        </div>
+      </div>
+
+      <!-- 移动端footer -->
       <footer
-        class="text-sm font-medium leading-5 divide-y divide-gray-200 dark:divide-slate-200/5 xl:col-start-1 xl:row-start-2"
+        class="xl:hidden text-sm font-medium leading-5 divide-y divide-gray-200 dark:divide-slate-200/5"
       >
         <div v-if="nextPost" class="py-8">
-          <h2
-            class="text-xs tracking-wide uppercase text-gray-500 dark:text-white"
-          >
+          <span class="text-xs tracking-wide uppercase text-gray-500 dark:text-white">
             Next Article
-          </h2>
-          <div class="link">
+          </span>
+          <div class="link mt-2">
             <a :href="nextPost.url">{{ nextPost.title }}</a>
           </div>
         </div>
         <div v-if="prevPost" class="py-8">
-          <h2
-            class="text-xs tracking-wide uppercase text-gray-500 dark:text-white"
-          >
+          <span class="text-xs tracking-wide uppercase text-gray-500 dark:text-white">
             Previous Article
-          </h2>
-          <div class="link">
+          </span>
+          <div class="link mt-2">
             <a :href="prevPost.url">{{ prevPost.title }}</a>
           </div>
         </div>

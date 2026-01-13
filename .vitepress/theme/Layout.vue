@@ -9,7 +9,7 @@ const { page, frontmatter } = useData()
 
 <template>
   <div class="antialiased dark:bg-slate-900">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-screen-2xl xl:px-0">
       <nav class="flex justify-between items-center py-10 font-bold">
         <a class="text-xl" href="/" aria-label="IronRookieCoder">
           <span class="hidden md:inline dark:text-white">IronRookieCoder</span>
@@ -25,7 +25,7 @@ const { page, frontmatter } = useData()
         </div>
       </nav>
     </div>
-    <main class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-screen-2xl xl:px-0">
       <Home v-if="frontmatter.index" />
       <NotFound v-else-if="page.isNotFound" />
       <Article v-else />
