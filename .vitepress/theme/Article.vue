@@ -35,6 +35,28 @@ const prevPost = computed(() => {
     ? postsArray[index + 1]
     : undefined
 })
+
+const agentYaml = computed(() => {
+  // Exclude VitePress internal fields
+  const excludeFields = ['title', 'date', 'author', 'index', 'layout']
+  
+  // Get all frontmatter keys except excluded ones
+  const customFields = Object.keys(data.value).filter(
+    key => !excludeFields.includes(key) && data.value[key] !== undefined
+  )
+  
+  // If no custom fields, don't show anything
+  if (customFields.length === 0) return ''
+  
+  // Generate YAML from all custom fields
+  let yaml = '---\n'
+  customFields.forEach(key => {
+    yaml += `${key}: ${data.value[key]}\n`
+  })
+  yaml += '---'
+  
+  return yaml
+})
 </script>
 
 <template>
@@ -43,6 +65,10 @@ const prevPost = computed(() => {
       <!-- 移动端布局 -->
       <div class="xl:hidden space-y-10">
         <Author />
+        <!-- Agent/Command Metadata Card (Mobile) -->
+        <div v-if="agentYaml" class="language-yaml">
+          <pre class="shiki bg-gray-50 dark:bg-slate-800 p-4 rounded-lg overflow-x-auto text-sm font-mono border border-gray-200 dark:border-slate-700"><code>{{ agentYaml }}</code></pre>
+        </div>
         <div class="divide-y divide-gray-200 dark:divide-slate-200/5">
           <Content class="prose dark:prose-invert max-w-none pt-10 pb-8" />
         </div>
@@ -77,6 +103,10 @@ const prevPost = computed(() => {
           </nav>
         </div>
         <div class="divide-y divide-gray-200 dark:divide-slate-200/5" style="grid-area: content">
+          <!-- Agent/Command Metadata Card (Desktop) -->
+          <div v-if="agentYaml" class="language-yaml mb-8 mt-10">
+            <pre class="shiki bg-gray-50 dark:bg-slate-800 p-4 rounded-lg overflow-x-auto text-sm font-mono border border-gray-200 dark:border-slate-700"><code>{{ agentYaml }}</code></pre>
+          </div>
           <Content class="prose dark:prose-invert max-w-none pt-10 pb-8" />
         </div>
         <div style="grid-area: toc">
