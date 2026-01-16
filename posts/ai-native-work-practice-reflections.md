@@ -1,6 +1,6 @@
 ---
 title: 近半年AI-Native工作感受与思考
-date: 2025-01-16
+date: 2026-01-16
 author: IronRookieCoder
 ---
 
